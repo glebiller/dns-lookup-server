@@ -1,0 +1,22 @@
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: dns-lookup-server
+  namespace: dns-lookup
+  labels:
+    app.kubernetes.io/name: dns-lookup-server
+    app.kubernetes.io/component: api
+    app.kubernetes.io/part-of: dns-lookup
+spec:
+  ingressClassName: nginx
+  rules:
+    - http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: dns-lookup-server
+                port:
+                  name: rest

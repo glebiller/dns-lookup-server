@@ -1,0 +1,10 @@
+.github
+!.github/.goreleaser.yaml
+deploy
+dist
+docker-compose.yaml
+Dockerfile
+Dockerfile.build
+README.md
+README_original.md
+swagger.json

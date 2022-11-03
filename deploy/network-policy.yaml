@@ -1,0 +1,32 @@
+---
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: dns-lookup-server
+  namespace: dns-lookup
+spec:
+  podSelector:
+    matchLabels:
+      app.kubernetes.io/name: dns-lookup-server
+      app.kubernetes.io/component: api
+      app.kubernetes.io/part-of: dns-lookup
+  policyTypes:
+    - Ingress
+    - Egress
+  ingress:
+    - from:
+        - namespaceSelector:
+            matchLabels:
+              kubernetes.io/metadata.name: nginx-system
+          podSelector:
+            matchLabels:
+              app.kubernetes.io/name: ingress-nginx
+      ports:
+        - port: 3000
+  egress:
+    - to:
+        - podSelector: { }
+          namespaceSelector: { }
+      ports:
+        - port: 53
+          protocol: UDP

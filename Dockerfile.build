@@ -1,0 +1,16 @@
+FROM golang:1.19 as builder
+
+RUN go install github.com/goreleaser/goreleaser@latest
+
+WORKDIR /src
+COPY . /src
+
+RUN go mod tidy
+RUN make clean dist/artifacts.json
+
+FROM scratch
+
+COPY --from=builder /src/dist/dns-lookup-server /dns-lookup-server
+
+ENTRYPOINT [ "/dns-lookup-server" ]
+CMD [ "" ]

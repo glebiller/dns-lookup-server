@@ -1,0 +1,24 @@
+---
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+resources:
+  - deployment.yaml
+  - ingress.yaml
+  - network-policy.yaml
+  - service.yaml
+images:
+  # This would allow an easy per environment (staging, production) update of the version, for instance using Flux
+  # image automation controller. To be as DRY as possible, I would use Kustomize overlays and only overwrite the
+  # configuration that are changing between environments and using this folder as a "base".
+  - name: ghcr.io/glebiller/dns-lookup-server
+    newTag: 1.0.0
+secretGenerator:
+  # Currently this file is not encrypted, which is ABSOLUTELY not recommended.
+  # One possible solution would be to use Mozilla SOPS or Sealed-Secrets in addition to a deployment tool like Flux.
+  # This would allow to safely commit the secret to the Git Repository,
+  # however it would also require a key rotation mechanism.
+  # Another option would be to use External Secrets to store secret on a Cloud provider.
+  - name: influxdb-token
+    namespace: dns-lookup
+    files:
+      - influxdb-token.env

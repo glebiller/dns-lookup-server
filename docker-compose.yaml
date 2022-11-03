@@ -1,0 +1,44 @@
+version: '3.9'
+services:
+  # InfluxDB to store query history
+  influxdb:
+    image: influxdb:latest
+    ports:
+      - "8086:8086"
+    volumes:
+      - influxdb-storage:/var/lib/influxdb
+    environment:
+      - DOCKER_INFLUXDB_INIT_MODE=setup
+      - DOCKER_INFLUXDB_INIT_USERNAME=dns-lookup-user
+      - DOCKER_INFLUXDB_INIT_PASSWORD=dns-lookup-pass
+      - DOCKER_INFLUXDB_INIT_ORG=dns-lookup
+      - DOCKER_INFLUXDB_INIT_BUCKET=successful-queries
+      - DOCKER_INFLUXDB_INIT_RETENTION=1w
+      - DOCKER_INFLUXDB_INIT_ADMIN_TOKEN=dns-lookup-admin-token
+    healthcheck:
+      test: "curl -f http://localhost:8086/ping"
+      interval: 3s
+      timeout: 10s
+      retries: 5
+    restart: always
+  dns-lookup-server:
+    depends_on:
+      influxdb:
+        condition: service_healthy
+    image: ghcr.io/glebiller/dns-lookup-server:1.0.0
+    build:
+      dockerfile: Dockerfile.build
+    command:
+      - --host=0.0.0.0
+      - --port=3000
+      - --influxdb-url=http://influxdb:8086/
+      - --influxdb-org=dns-lookup
+    environment:
+      - INFLUXDB_TOKEN=dns-lookup-admin-token
+    ports:
+      - "3000:3000"
+    links:
+      - influxdb
+    restart: always
+volumes:
+  influxdb-storage: {}

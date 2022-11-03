@@ -1,0 +1,20 @@
+---
+kind: Service
+apiVersion: v1
+metadata:
+  name: dns-lookup-server
+  namespace: dns-lookup
+  labels:
+    app.kubernetes.io/name: dns-lookup-server
+    app.kubernetes.io/component: api
+    app.kubernetes.io/part-of: dns-lookup
+spec:
+  selector:
+    app.kubernetes.io/name: dns-lookup-server
+    app.kubernetes.io/component: api
+    app.kubernetes.io/part-of: dns-lookup
+  ports:
+    - port: 3000
+      name: rest
+      targetPort: rest
+
