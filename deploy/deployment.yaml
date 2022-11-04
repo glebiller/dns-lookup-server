@@ -31,7 +31,7 @@ spec:
           name: dns-lookup-server
           args: [
             "--port", "3000",
-            "--influxdb-url", "http://localhost:8086/",
+            "--influxdb-url", "http://influxdb:8086/",
             "--influxdb-org", "dns-lookup",
           ]
           envFrom:

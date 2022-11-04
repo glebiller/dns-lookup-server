@@ -48,3 +48,4 @@ I picked "yamllint" and "kube-score" for code validation (run with make).
 As I time-boxed myself, I did not have the time to lunch & verify that the manifests are working.
 It's also missing a readiness probe (currently I use liveness with the health endpoint), 
 but for that app I cannot find any use case where the application would be unavailable temporarily.
+One last piece that is missing are the manifests for deploying InfluxDB on Kubernetes.
