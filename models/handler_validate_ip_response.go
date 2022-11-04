@@ -18,7 +18,7 @@ import (
 type HandlerValidateIPResponse struct {
 
 	// status
-	Status bool `json:"status,omitempty"`
+	Status bool `json:"status"`
 }
 
 // Validate validates this handler validate IP response
