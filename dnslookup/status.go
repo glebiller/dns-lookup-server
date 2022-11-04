@@ -4,11 +4,14 @@ import (
 	"encoding/json"
 	"net/http"
 	"os"
-	"runtime/debug"
 	"time"
 )
 
 const kubernetesServiceHostKey = "KUBERNETES_SERVICE_HOST"
+
+var (
+	version = "snapshot"
+)
 
 // ModelStatus model status.
 type ModelStatus struct {
@@ -44,14 +47,8 @@ func (m StatusMiddleware) ServeHTTP(rw http.ResponseWriter, r *http.Request) {
 }
 
 func (m StatusMiddleware) writeApplicationStatus(rw http.ResponseWriter) {
-	buildInfo, ok := debug.ReadBuildInfo()
-	if !ok {
-		rw.WriteHeader(httpServerError)
-		return
-	}
-
 	status := ModelStatus{
-		Version:    buildInfo.Main.Version,
+		Version:    version,
 		Date:       time.Now().Unix(),
 		Kubernetes: m.runningOnKubernetes,
 	}

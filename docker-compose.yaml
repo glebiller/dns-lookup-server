@@ -26,8 +26,8 @@ services:
       influxdb:
         condition: service_healthy
     image: ghcr.io/glebiller/dns-lookup-server:1.0.0
-    build:
-      dockerfile: Dockerfile.build
+    #build:
+    #  dockerfile: Dockerfile.build
     command:
       - --host=0.0.0.0
       - --port=3000
