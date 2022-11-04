@@ -1,5 +1,8 @@
 package dnslookup
 
+const httpServerError = 500
+const httpGetMethod = "GET"
+
 //nolint:gochecknoglobals // linting ignored for simplicity.
 var InfluxDBConfig = struct {
 	URL   string `long:"influxdb-url" description:"URL of database" env:"INFLUXDB_URL" default:"http://localhost:8086"`

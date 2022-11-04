@@ -1,0 +1,25 @@
+---
+extends: default
+
+ignore: |
+  .github
+  dist/
+rules:
+  document-start: false
+  comments:
+    min-spaces-from-content: 1
+  braces:
+    min-spaces-inside: 1
+    max-spaces-inside: 1
+    min-spaces-inside-empty: 1
+    max-spaces-inside-empty: 1
+  brackets:
+    min-spaces-inside: 1
+    max-spaces-inside: 1
+    min-spaces-inside-empty: 1
+    max-spaces-inside-empty: 1
+  line-length:
+    max: 180
+    level: warning
+  truthy:
+    check-keys: false

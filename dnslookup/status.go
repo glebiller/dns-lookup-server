@@ -10,7 +10,7 @@ import (
 
 const kubernetesServiceHostKey = "KUBERNETES_SERVICE_HOST"
 
-// ModelStatus model status
+// ModelStatus model status.
 type ModelStatus struct {
 	Version    string `json:"version"`
 	Date       int64  `json:"date"`
@@ -36,17 +36,17 @@ type StatusMiddleware struct {
 }
 
 func (m StatusMiddleware) ServeHTTP(rw http.ResponseWriter, r *http.Request) {
-	if r.Method == "GET" && r.URL.Path == "/" {
-		m.writeApplicationStatus(rw, r)
+	if r.Method == httpGetMethod && r.URL.Path == "/" {
+		m.writeApplicationStatus(rw)
 	} else {
 		m.nextHandler.ServeHTTP(rw, r)
 	}
 }
 
-func (m StatusMiddleware) writeApplicationStatus(rw http.ResponseWriter, r *http.Request) {
+func (m StatusMiddleware) writeApplicationStatus(rw http.ResponseWriter) {
 	buildInfo, ok := debug.ReadBuildInfo()
 	if !ok {
-		rw.WriteHeader(500)
+		rw.WriteHeader(httpServerError)
 		return
 	}
 
@@ -58,14 +58,14 @@ func (m StatusMiddleware) writeApplicationStatus(rw http.ResponseWriter, r *http
 	output, err := json.Marshal(status)
 	if err != nil {
 		// TODO improve error message
-		rw.WriteHeader(500)
+		rw.WriteHeader(httpServerError)
 		return
 	}
 
 	_, err = rw.Write(output)
 	if err != nil {
 		// TODO improve error message
-		rw.WriteHeader(500)
+		rw.WriteHeader(httpServerError)
 		return
 	}
 }

@@ -21,8 +21,8 @@ const domainHistoryQuery = `from(bucket: "successful-queries")
 			|> range(start: -1w)
             |> filter(fn: (r) => r._measurement == "log")
 			|> filter(fn: (r) => r["_field"] == "json")
-			|> limit(n: 20)
-			|> sort()`
+			|> sort(columns: ["_time"], desc: true)
+			|> limit(n: 20)`
 
 type DomainTools struct {
 	databaseClient influxdb2.Client
@@ -33,8 +33,9 @@ func NewDomainTools() DomainTools {
 	_, err := client.Ping(context.Background())
 	if err != nil {
 		// I prefer to have a fail-fast program in case there is a configuration error
-		panic(fmt.Errorf("fail to connect to the database: %v", err))
+		panic(fmt.Errorf("fail to connect to the database: %w", err))
 	}
+	//nolint:forbidigo // TODO should be using server Log service instead
 	fmt.Printf("saving query logs to %s\n", InfluxDBConfig.URL)
 	return DomainTools{
 		databaseClient: client,
