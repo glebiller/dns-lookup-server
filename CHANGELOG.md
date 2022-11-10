@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.0.2](https://github.com/glebiller/dns-lookup-server/compare/v1.0.1...v1.0.2) (2022-11-10)
+
+
+### Bug Fixes
+
+* use released version instead of building ([693b234](https://github.com/glebiller/dns-lookup-server/commit/693b2346923d643b998f0f8cdaceabb5c9d13ca7))
+
 ## [1.0.1](https://github.com/glebiller/dns-lookup-server/compare/v1.0.0...v1.0.1) (2022-11-04)
 
 
